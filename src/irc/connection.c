@@ -28,7 +28,7 @@ void	irc_receive(int fd)
 			if (msg_len < 0)
 				perror("recv");
 			else if (msg_len == 0)
-				printf("TODO: Server closed...");
+				printf("Disconnected!");
 			else
 				write(STDOUT_FILENO, msg_buffer, msg_len);
 		}
