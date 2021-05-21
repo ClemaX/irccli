@@ -47,7 +47,7 @@ static int	routine(int socket_fd)
 	return (err);
 }
 
-int	main(int ac, const char **av, const char **envp)
+int			main(int ac, const char **av, const char **envp)
 {
 	t_env		*env;
 	t_term_err	err;
@@ -68,9 +68,9 @@ int	main(int ac, const char **av, const char **envp)
 		return (err);
 	}
 	err = routine(socket_fd);
-	term_destroy();
-	env_clr(&env);
 	if (close(socket_fd) != 0)
 		perror("close");
+	term_destroy();
+	env_clr(&env);
 	return (err);
 }
