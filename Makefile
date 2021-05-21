@@ -1,11 +1,10 @@
-NAME = skeleton
+NAME = irccli
 
 # Compiler and linker
 CC = clang
 LD = clang
 
 # Paths
-SRCDIR = src
 INCDIR = include
 LIBDIR = lib
 
@@ -13,7 +12,7 @@ OBJDIR = obj
 BINDIR = .
 
 # Library dependencies
-LIBS = $(addprefix $(LIBDIR), )
+LIBS = $(addprefix $(LIBDIR)/, libft/libft.a)
 
 LIBDIRS = $(dir $(LIBS))
 LIBINCS = $(addsuffix $(INCDIR), $(LIBDIRS))
@@ -21,18 +20,16 @@ LIBARS = $(notdir $(LIBS))
 
 # Sources
 INCS = $(LIBINCS) $(INCDIR)
-SRCS = $(addprefix $(SRCDIR)/,\
-	main.c\
-)
+include srcs.mk
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 DEPS = $(OBJS:.o=.d)
 
 # Flags
-CFLAGS = -Wall -Wextra -Werror $(INCS:%=-I%)
+CFLAGS = -Wall -Wextra -Werror $(INCS:%=-I%) -g3 -fsanitize=address
 DFLAGS = -MT $@ -MMD -MP -MF $(OBJDIR)/$*.d
-LDFLAGS = $(LIBDIRS:%=-L%)
-LDLIBS = $(LIBARS:lib%.a=-l%)
+LDFLAGS = $(LIBDIRS:%=-L%) -g3 -fsanitize=address
+LDLIBS = $(LIBARS:lib%.a=-l%) -lncurses
 
 # Compiling commands
 COMPILE.c = $(CC) $(DFLAGS) $(CFLAGS) -c
