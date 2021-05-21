@@ -12,6 +12,8 @@
 
 #include <term/keybinds.h>
 
+#include <irc/connection.h>
+
 /*
 **	Control key-strokes.
 */
@@ -70,7 +72,7 @@ static t_term_err	post_read(t_term_err status)
 **	Read and parse an interactive terminal's input.
 */
 
-t_term_err			term_read_caps(void)
+t_term_err			term_read_caps(int connection_fd)
 {
 	t_term_err	status;
 	ssize_t		read_st;
@@ -80,6 +82,7 @@ t_term_err			term_read_caps(void)
 		return (status);
 	while (status == TERM_EOK)
 	{
+		irc_receive(connection_fd);
 		if ((read_st = read(STDIN_FILENO, &c, 1)) != 1)
 			status = (read_st == 0) ? TERM_EEOF : TERM_EREAD;
 		else if (c == ANSI_ESC)

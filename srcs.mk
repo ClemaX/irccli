@@ -7,6 +7,9 @@ SRCS = $(addprefix $(SRCDIR)/,\
 		env_get.c\
 		env_set.c\
 	)\
+	$(addprefix irc/,\
+		connection.c\
+	)\
 	main.c\
 	$(addprefix term/,\
 		caps.c\

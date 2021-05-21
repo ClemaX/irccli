@@ -99,7 +99,7 @@ typedef struct		s_keybind
 */
 t_term_err			term_init(t_env **env, const char *cwd, bool is_login);
 void				term_destroy(void);
-t_term_err			term_prompt(const char **dest);
+t_term_err			term_prompt(const char **dest, int connection_fd);
 
 /*
 **					init.c
@@ -124,8 +124,8 @@ t_term_action		keybind_get(const t_keybind *keybinds, size_t n, char key);
 /*
 **					read.c / read_bonus.c
 */
-t_term_err			term_read_caps(void);
-t_term_err			term_read(void);
+t_term_err			term_read_caps(int connection_fd);
+t_term_err			term_read(int connection_fd);
 
 /*
 **					read_esc_bonus.c

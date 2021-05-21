@@ -13,6 +13,8 @@
 #include <term/term.h>
 #include <signal.h>
 
+#include <irc/connection.h>
+
 void	do_nothing(int signal)
 {
 	(void)signal;
@@ -37,10 +39,11 @@ void	term_sig_interrupt(int signal)
 **	Read and parse a terminal's input.
 */
 
-int		term_read(void)
+int		term_read(int connection_fd)
 {
 	int	read_st;
 
+	irc_receive(connection_fd);
 	free(g_term.line->data);
 	g_term.line->data = NULL;
 	g_term.line->len = 0;

@@ -26,7 +26,8 @@ static void			term_resize_window(int signal)
 		caps_goto(&g_term.caps, (t_pos){0, 0});
 		g_term.caps.index = 0;
 		tputs(g_term.caps.ctrls.del_eos, 1, &putc_err);
-		term_origin(g_term.msg->data, g_term.msg->len);
+		if (g_term.msg)
+			term_origin(g_term.msg->data, g_term.msg->len);
 		term_write(g_term.line->data, g_term.line->len);
 		cursor_goto_index(index);
 	}
@@ -100,7 +101,7 @@ void				term_destroy(void)
 **	Prompt the user of an interactive terminal.
 */
 
-t_term_err			term_prompt(const char **dst)
+t_term_err			term_prompt(const char **dst, int connection_fd)
 {
 	t_term_err	status;
 
@@ -108,7 +109,7 @@ t_term_err			term_prompt(const char **dst)
 	if (!(g_term.is_interactive && g_term.msg && g_term.msg->len)
 	|| (status = term_origin(g_term.msg->data, g_term.msg->len)) == TERM_EOK)
 	{
-		status = (g_term.has_caps) ? term_read_caps() : term_read();
+		status = ((g_term.has_caps) ? term_read_caps : term_read)(connection_fd);
 		if (dst)
 			*dst = g_term.line->data;
 	}
